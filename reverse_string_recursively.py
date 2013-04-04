@@ -7,7 +7,7 @@
 # the O log N notation for this one. 
 #
 
-old = "cow"
+old = "Able I was ere I saw Alba"
 new = ""
 l = len(old)
 
@@ -16,9 +16,8 @@ def reverse_string(s,n,l):
 		return n
 	else:
 		l = l - 1
-		n = n + s[l] #HERE
+		n = n + s[l] 
 		return reverse_string(s,n,l)
-	print "should not get here"
 
 new = reverse_string(old,new,l)
 print new
