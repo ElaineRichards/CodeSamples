@@ -25,7 +25,7 @@ class Location:
 		self.r_objects = r_objects
 
 class Player:
-	def __init__(self, whereami)
+	def __init__(self, whereami):
 		self.whereami = whereami
 
 #
@@ -36,7 +36,3 @@ def assignvalue(roomname):
 	roomarray = locationinfo[roomname]
 	thisthingie = Location( roomname, roomarray[0], roomarray[1], roomarray[2], roomarray[3], roomarray[4], roomarray[5], roomarray[6], roomarray[7], roomarray[8], roomarray[9], roomarray[10], roomarray[11])
 	return thisthingie
-
-
-anotherroom = assignvalue("ROOM2")
-print anotherroom.r_description
