@@ -1,0 +1,30 @@
+CCA Notes:
+	Elaine Richards
+
+First pass - 
+	Set up objects representing locations DONE
+	Define location class and test DONE
+		Location gets initialized based on contents in
+		locationdictionary.py and will print back what's in it.
+
+Second pass - 
+	Modify locationdictionary.py so that the directions have values
+		other than their own names.
+	Write routine to change locations based on direction input.
+
+Third pass - 
+	Write method to translate things that are a little "off" into
+		approved directions. (ex.upcase, northwest = nw, etc.)
+
+Fourth pass - 
+	Set up objects representing things you carry
+	Set up player object
+
+
+Files so far:
+
+__init__.py
+classes.py
+locationdictionary.py
+locationlist.py
+notes
