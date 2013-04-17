@@ -1,11 +1,12 @@
 #!/usr/bin/python
+import pdb
 import sys
 #
 # This reads adventure.dat, which is a simple text file.
 #
 #
 try : 
-	f = open('advent.dat','r')
+	textfiletoread = open('advent.dat','r')
 except:
 	print "Can't find data file to open."
 	sys.exit()
@@ -13,16 +14,18 @@ except:
 skipme = 0 # For debugging
 section = 1 # Section 1 in the data file
 roomtable = {} #Stores the classes for each room
+roomlisttable = {}
+itemlisttable = {}
 inputs = {} #Maps word to a number, ex inputs["ROAD"] = 2
 itemtable = {}
 amsg = {}
 
 # For Section 5
 class Item():
-	def __init__(self,itemnumber,propertyvalue,inventorymessages):
+	def __init__(self,itemnumber,propertyvalue,inventorymessage):
 		self.itemnumber = itemnumber
 		self.propertyvalue = propertyvalue
-		self.inventorymessages = inventorymessages
+		self.inventorymessage = inventorymessage
 		self.moveable = True
 		self.initiallocation = 0
 		self.secondlocation = 0
@@ -30,11 +33,26 @@ class Item():
 	def moveable(self,moveable):
 		self.moveable = moveable
 
+	def __getattr__(self,moveable):
+		self.moveable	
+
 	def initiallocation(self, initiallocation):
 		self.initiallocation = initiallocation
 
 	def secondlocation(self, secondlocation):
 		self.secondlocation = secondlocation
+
+	def debug(self,itemnumber,propertyvalue,inventorymessage,moveable,initiallocation,secondlocation):
+		print "itemnumber " + str(self.itemnumber)
+		print "propertyvalue " + str(self.propertyvalue)
+		if inventorymessage:
+			print "inventorymessage " + str(self.inventorymessage)
+		else:
+			print "no inventory message"
+		print "Is it moveable? ", 
+		print moveable
+		print "location 1: " + str(self.initiallocation)
+		print "location 2: " + str(self.secondlocation)
 
 # For Section 6
 class Arbitrarymessage():
@@ -63,7 +81,6 @@ class Location:
 
 	def redoarray(self, traveltable):
 		self.traveltable = traveltable
-		#setattr(self,traveltable, self.traveltable)
 
 	def debug(self,roomname,visited,long_description,short_description):
 		print "+----------------------------------------------"
@@ -74,7 +91,7 @@ class Location:
 		print "SHORT DESCRIPTION " + self.short_description
 
 
-for x in f.readlines():
+for x in textfiletoread.readlines():
 	x = x.rstrip('\n') #Replaces Perl chomp
 	temp = x.split('	')
 	# For now just put long descriptions in a hash
@@ -82,6 +99,7 @@ for x in f.readlines():
 	if ( section == 1 ):
 		if ( len(temp) > 1 ):
 			roomname = "ROOM" + str(temp[0])
+			roomlisttable[roomname] = roomname
 			if roomname in roomtable:
 				if ( roomtable[roomname].long_description ):
 					x = roomtable[roomname].long_description
@@ -126,13 +144,6 @@ for x in f.readlines():
 				t = roomtable[roomname].traveltable
 				t[a] = nextroom
 				roomtable[roomname].redoarray(t)
-	if ( skipme > 0):
-		sys.exit()
-		a = roomtable[roomname].roomname
-		b = roomtable[roomname].visited
-		c = roomtable[roomname].long_description
-		d = roomtable[roomname].short_description
-		roomtable[roomname].debug(a,b,c,d)
 	# Section 4 section 4
 	# Each word matches a number. Some numbers have more than one
 	# word. So, the key is the word. 
@@ -172,12 +183,15 @@ for x in f.readlines():
 		if ( len(temp) > 1 ):
 			objectnumber = temp[0]
 			initiallocation = temp[1]
-			if ( len(temp)>2 ): #HERE
-				itemtable[objectnumber].moveable(False) #HERE
+			itemlisttable[objectnumber] = objectnumber
+			itemtable[objectnumber] = Item(objectnumber,initiallocation,"")
+			item = itemtable[objectnumber]
+			if ( len(temp)>2 ): 
+				item.moveable = False
 				if ( temp[2] < 0 ):
 					pass
 				else:
-					#secondlocation
+					item.secondlocation = temp[2]
 					pass
 
 	# Section 8 section 8
@@ -186,6 +200,7 @@ for x in f.readlines():
 			actionverbnumber = temp[0]
 			defaultmessageindex = temp[1]
 		#index of default message (see section 6)
+
 
 	# Section 9 section 9
 	if ( section == 9 ): #liquidassets
@@ -197,7 +212,33 @@ for x in f.readlines():
 		section += 1
 		print "section now " + str(section)
 		ROOMNAME = "ROOM0" #Reset the room number
-		#sys.exit()
-	
 
-f.close()
+# For debugging
+
+roomarray = list(roomlisttable.keys())
+
+skip = 0
+if (skip > 1 ):
+	for roomname in roomarray:
+		a = roomtable[roomname].roomname
+		b = roomtable[roomname].visited
+		c = roomtable[roomname].long_description
+		d = roomtable[roomname].short_description
+		roomtable[roomname].debug(a,b,c,d)
+
+
+itemlistarray = list(itemlisttable.keys())
+for y in itemlistarray:
+	print "y is " + str(y)
+
+for x in itemlistarray:
+	a = itemtable[x].itemnumber
+	b = itemtable[x].propertyvalue
+	c = itemtable[x].inventorymessage
+	d = itemtable[x].moveable
+	e = itemtable[x].initiallocation
+	f = itemtable[x].secondlocation
+	itemtable[x].debug(a,b,c,d,e,f)
+
+
+textfiletoread.close()
