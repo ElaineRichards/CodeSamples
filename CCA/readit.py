@@ -4,21 +4,6 @@ import sys
 #
 # This reads adventure.dat, which is a simple text file.
 #
-#
-try : 
-	textfiletoread = open('advent.dat','r')
-except:
-	print "Can't find data file to open."
-	sys.exit()
-
-skipme = 0 # For debugging
-section = 1 # Section 1 in the data file
-roomtable = {} #Stores the classes for each room
-roomlisttable = {}
-itemlisttable = {}
-inputs = {} #Maps word to a number, ex inputs["ROAD"] = 2
-itemtable = {}
-amsg = {}
 
 # For Section 5
 class Item():
@@ -60,14 +45,6 @@ class Arbitrarymessage():
 		self.messagenumber = messagenumber
 		self.message = message
 
-def makeemptyarray():
-	i = 0
-	emptyactionarray = []
-	while ( i < 300 ):
-		emptyactionarray.append("CANTGO")
-		i += 1
-	return emptyactionarray
-
 class Location:
 	def __init__(self,roomname,visited,long_description):
 		self.roomname = roomname
@@ -90,7 +67,32 @@ class Location:
 		print "LONG DESCRIPTION " + self.long_description
 		print "SHORT DESCRIPTION " + self.short_description
 
+#HERE
 
+def makeemptyarray():
+	i = 0
+	emptyactionarray = []
+	while ( i < 300 ):
+		emptyactionarray.append("i")
+		i += 1
+	return emptyactionarray
+
+
+try : 
+	textfiletoread = open('advent.dat','r')
+except:
+	print "Can't find data file to open."
+	sys.exit()
+
+section = 1 # Section 1 in the data file
+roomtable = {} #Stores the classes for each room
+roomlisttable = {} #Dictionary of rooms of class Location
+itemlisttable = {} #Dictionary of items of class Item
+inputs = {} #Maps word to a number, ex inputs["ROAD"] = 2
+itemtable = {}
+amsg = {}
+
+# START READING FILE
 for x in textfiletoread.readlines():
 	x = x.rstrip('\n') #Replaces Perl chomp
 	temp = x.split('	')
@@ -152,7 +154,7 @@ for x in textfiletoread.readlines():
 			word = temp[1]
 			inputs[word] = temp[0]
 
-	# Section 5 section 5
+	# Section 5 section 5 Object Descriptions - TBD
 	# 
 	if ( section == 5 ):
 		if ( len(temp) > 1 ):
@@ -210,14 +212,20 @@ for x in textfiletoread.readlines():
 		#condition bits
 	if (x[0] == '-' and x[1] == '1'): # separates sections, somewhat variable
 		section += 1
-		print "section now " + str(section)
 		ROOMNAME = "ROOM0" #Reset the room number
+
+# Done with the file. Close it.
+textfiletoread.close()
+#END READING FILE
 
 # For debugging
 
 roomarray = list(roomlisttable.keys())
 
+#HERE
+
 skip = 0
+
 if (skip > 1 ):
 	for roomname in roomarray:
 		a = roomtable[roomname].roomname
@@ -225,20 +233,55 @@ if (skip > 1 ):
 		c = roomtable[roomname].long_description
 		d = roomtable[roomname].short_description
 		roomtable[roomname].debug(a,b,c,d)
-
+		print roomtable[roomname].traveltable
+#HERE
 
 itemlistarray = list(itemlisttable.keys())
-for y in itemlistarray:
-	print "y is " + str(y)
 
-for x in itemlistarray:
-	a = itemtable[x].itemnumber
-	b = itemtable[x].propertyvalue
-	c = itemtable[x].inventorymessage
-	d = itemtable[x].moveable
-	e = itemtable[x].initiallocation
-	f = itemtable[x].secondlocation
-	itemtable[x].debug(a,b,c,d,e,f)
+if (skip > 1 ):
+	for x in itemlistarray:
+		a = itemtable[x].itemnumber
+		b = itemtable[x].propertyvalue
+		c = itemtable[x].inventorymessage
+		d = itemtable[x].moveable
+		e = itemtable[x].initiallocation
+		f = itemtable[x].secondlocation
+		itemtable[x].debug(a,b,c,d,e,f)
+
+if (skip > 1):
+	array = list(amsg.keys())
+
+if ( skip > 1 ):
+	for x in array:
+		print "x ",
+		print x,
+		print " : ",
+		# This is a class amsg[x] 
+		messagething = amsg[x]
+
+	array = list(inputs.keys())
+	for x in array:
+		print "There are multiple permutations of words mapped to integers. word is ",
+		print x
+		print "contents of word is an integer ",
+		print inputs[x]
 
 
-textfiletoread.close()
+def getlocationtable():
+	return roomtable
+
+def getlocationlisttable():
+	return roomlisttable
+
+def getitemlisttable():
+	return itemlisttable
+
+def getinputs():
+	return inputs
+
+def getitemtable():
+	return itemtable
+
+def getamsg():
+	return amsg
+
