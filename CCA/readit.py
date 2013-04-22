@@ -127,24 +127,20 @@ for x in textfiletoread.readlines():
 		if ( roomname ):
 			oldroomname = roomname	
 		if ( len(temp) > 2 ):
-			roomname = "ROOM" + str(temp[0])
+			roomname = "ROOM" + str(temp[0]) #Definitely the room
 			del temp[0]
-			#if (roomname == oldroomname or roomname == "ROOM0"):
-				#print "First case or continuing"
-				#pass
-			#else:
-				#print "More places to go from " + roomname
-				# assign the stuff to the class
-				#pass
 			# Some of the "nextroom numbers are crazy high.
 			# need to wrap logic around that.
-			nextroom = "ROOM" + str(temp[0])
+			t = int(temp[0])
+			entry = int(temp[0])
+			if ( t < 300):
+				t = "ROOM" + str(temp[0])
 			del temp[0]
 			actionwords = temp
 			for actionnumber in actionwords:
 				a = int(actionnumber)
 				t = roomtable[roomname].traveltable
-				t[a] = nextroom
+				t[a] = entry
 				roomtable[roomname].redoarray(t)
 	# Section 4 section 4
 	# Each word matches a number. Some numbers have more than one
