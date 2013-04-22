@@ -1,42 +1,20 @@
 CCA Notes:
 	Elaine Richards
 
-First pass -  DONE
-	Set up objects representing locations DONE
-	Define location class and test DONE
-		Location gets initialized based on contents in
-		locationdictionary.py and will print back what's in it.
 
-Second pass -  DONE Proof of concept
-	Modify locationdictionary.py so that the directions have values
-		other than their own names.
-		This is partially done. The locationdictionary is large
-		and a lot needs doing.
-	Write routine to change locations based on direction input.
-		DONE: This demonstrates that it can change your location.
+Initially, I just set this up so that I could define a class and load some
+information into it. 
 
-Third pass -  DONE
-	Write method to translate things that are a little "off" into
-		approved directions. (ex.upcase, northwest = nw, etc.)
+I casually mentioned to some guys at a party that I was doing this. They
+got all excited and said that if I could figure out how to read the
+data files for text based games like this, I could write the game engine.
 
-Third and a Half pass -
-	Add "LOOK" command
-	Add ability to give you a summary of the location.	
+So, I did what any exciteable person would do. I sat on the floor all weekend
+writing out a strategy for reading the data file, advent.dat, and loading
+it into data structures.
 
-Fourth pass - 
-	Set up objects representing things you carry
-	Set up player object
-
-Down the road -
-	Scoring
-	Exit condition
-
-Files so far:
-
-__init__.py
-actiondictionary.py
-adventure.py
-classes.py
-locationdictionary.py
-locationlist.py
-notes
+I'm still in the process of understanding how the data is used. However, I
+can set up location information and movement information so that you can
+move from place to place. It's still in a fragile place, but I want it in
+the repo because it does some actions I want to see and I want to know I
+can go back to that state if I get discombobulated.
