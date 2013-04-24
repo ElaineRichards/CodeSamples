@@ -18,3 +18,16 @@ while i < 101:
 		print "Buzz"
 		continue
 	print i
+
+i = 0
+while i < 101:
+	i += 1
+	printme ='' 
+	if i%3 == 0:
+		printme = "Fizz"
+	if i%5 == 0:
+		printme = printme + "Buzz"
+	if printme:
+		print printme
+	else:
+		print i
