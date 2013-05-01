@@ -3,7 +3,8 @@ import pdb
 import sys
 #
 # This reads adventure.dat, which is a simple text file.
-#
+# This is going to need a __main__ and all those goodies, as
+# well as defining the place as dark or not and defining objects better.
 
 # For Section 5
 class Item():
@@ -28,29 +29,27 @@ class Item():
 		self.secondlocation = secondlocation
 
 	def debug(self,itemnumber,propertyvalue,inventorymessage,moveable,initiallocation,secondlocation):
-		print "itemnumber " + str(self.itemnumber)
-		print "propertyvalue " + str(self.propertyvalue)
+		print "itemnumber", str(self.itemnumber)
+		print "propertyvalue", str(self.propertyvalue)
 		if inventorymessage:
-			print "inventorymessage " + str(self.inventorymessage)
+			print "inventorymessage",str(self.inventorymessage)
 		else:
 			print "no inventory message"
 		print "Is it moveable? ", 
 		print moveable
-		print "location 1: " + str(self.initiallocation)
-		print "location 2: " + str(self.secondlocation)
+		print "location 1:", str(self.initiallocation)
+		print "location 2:", str(self.secondlocation)
 
-# For Section 6
-class Arbitrarymessage():
-	def __init__(self,messagenumber,message):
-		self.messagenumber = messagenumber
-		self.message = message
-
+# I think of different locations as rooms. Oh well. They have properties,
+# like if they have been visited already, long descriptions and short
+# descriptions.
+#
 class Location:
 	def __init__(self,roomname,visited,long_description):
 		self.roomname = roomname
 		self.visited = visited
 		self.long_description = long_description
-		self.short_description = "PENDING SHORT_DESCRIPTION"
+		self.short_description = "PENDING SHORT_DESCRIPTION - this might not actually be a location."
 		self.traveltable = makeemptyarray()
 
 	def short_description(self,short_description):
@@ -61,13 +60,10 @@ class Location:
 
 	def debug(self,roomname,visited,long_description,short_description):
 		print "+----------------------------------------------"
-		print "ROOMNAME " + self.roomname
-		print "VISITED ",
-		print self.visited
-		print "LONG DESCRIPTION " + self.long_description
-		print "SHORT DESCRIPTION " + self.short_description
-
-#HERE
+		print "ROOMNAME ", self.roomname
+		print "VISITED ", self.visited
+		print "LONG DESCRIPTION ", self.long_description
+		print "SHORT DESCRIPTION " , self.short_description
 
 def makeemptyarray():
 	i = 0
@@ -77,6 +73,8 @@ def makeemptyarray():
 		i += 1
 	return emptyactionarray
 
+
+amsg = makeemptyarray
 
 try : 
 	textfiletoread = open('advent.dat','r')
@@ -167,12 +165,10 @@ for x in textfiletoread.readlines():
 		if ( len(temp) == 2 ):
 			m = str(temp[0])
 			if m in amsg:
-				if ( amsg[m].message ):
-					x = amsg[m].message
-					x = x + " " + temp[1]
-					amsg[m].message = x
+				if ( amsg[m] ):
+					amsg[m] = amsg[m] + " " + temp[1]
 			else:
-				amsg[m] = Arbitrarymessage(m,temp[1])
+				amsg[m] = temp[1]
 
 	# Section 7 section 7
 	#
@@ -214,54 +210,6 @@ for x in textfiletoread.readlines():
 textfiletoread.close()
 #END READING FILE
 
-# For debugging
-
-roomarray = list(roomlisttable.keys())
-
-#HERE
-
-skip = 0
-
-if (skip > 1 ):
-	for roomname in roomarray:
-		a = roomtable[roomname].roomname
-		b = roomtable[roomname].visited
-		c = roomtable[roomname].long_description
-		d = roomtable[roomname].short_description
-		roomtable[roomname].debug(a,b,c,d)
-		print roomtable[roomname].traveltable
-#HERE
-
-itemlistarray = list(itemlisttable.keys())
-
-if (skip > 1 ):
-	for x in itemlistarray:
-		a = itemtable[x].itemnumber
-		b = itemtable[x].propertyvalue
-		c = itemtable[x].inventorymessage
-		d = itemtable[x].moveable
-		e = itemtable[x].initiallocation
-		f = itemtable[x].secondlocation
-		itemtable[x].debug(a,b,c,d,e,f)
-
-if (skip > 1):
-	array = list(amsg.keys())
-
-if ( skip > 1 ):
-	for x in array:
-		print "x ",
-		print x,
-		print " : ",
-		# This is a class amsg[x] 
-		messagething = amsg[x]
-
-	array = list(inputs.keys())
-	for x in array:
-		print "There are multiple permutations of words mapped to integers. word is ",
-		print x
-		print "contents of word is an integer ",
-		print inputs[x]
-
 
 def getlocationtable():
 	return roomtable
@@ -280,4 +228,5 @@ def getitemtable():
 
 def getamsg():
 	return amsg
+
 
